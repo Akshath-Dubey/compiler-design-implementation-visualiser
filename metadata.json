@@ -1,0 +1,6 @@
+{
+  "name": "Compiler Phase Visualizer",
+  "description": "An interactive educational tool that visualizes the six compiler phases (Lexical, Syntax, Semantic, Intermediate Code, Optimization, Target Code) in real-time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
