@@ -1,0 +1,6 @@
+- [ ] Inspect current AdSense integration (AdPlaceholder / AdSenseCard / index.html)
+- [ ] Fix missing AdSense <ins> tags (currently showing placeholders instead of real ads)
+- [ ] Add a reusable AdSense component and use it in App / PhaseDisplay
+- [ ] Ensure window.adsbygoogle script load & one-time initialization
+- [ ] Verify build/lint passes
+- [ ] Run dev server and sanity-check ad containers render expected markup
