@@ -29,13 +29,43 @@ export default function AdPlaceholder({ type, id }: AdPlaceholderProps) {
   const height = type === "leaderboard" ? 90 : 250;
 
   useEffect(() => {
-    // Let AdSense script load (it is already in index.html) and then trigger rendering.
-    try {
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
-    } catch (e) {
-      console.error("AdSense push error:", e);
-    }
+    let cancelled = false;
+
+    const pushAd = () => {
+      try {
+        if (cancelled) return;
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+      } catch (e) {
+        console.error("AdSense push error:", e);
+      }
+    };
+
+    // AdSense script defines window.adsbygoogle (and later loads ad renderer).
+    // We retry a few times to avoid push({}) happening before the script is ready.
+    const maxAttempts = 10;
+    let attempt = 0;
+
+    const tick = () => {
+      attempt += 1;
+      const ready = typeof window.adsbygoogle !== "undefined";
+      if (ready) {
+        pushAd();
+        return;
+      }
+      if (attempt >= maxAttempts) {
+        // One last best-effort push in case something else created the array.
+        pushAd();
+        return;
+      }
+      window.setTimeout(tick, 250);
+    };
+
+    tick();
+
+    return () => {
+      cancelled = true;
+    };
   }, [type, dataAdSlot]);
 
   return (
